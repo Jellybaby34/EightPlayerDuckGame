@@ -46,7 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="src\8PlayerLimit.cs" />
+    <Compile Include="8PlayerLimit.cs" />
+    <Compile Include="src\DuckNetworkCoreEdits.cs" />
+    <Compile Include="src\PersonaEdits.cs" />
+    <Compile Include="src\InputProfileCoreEdits.cs" />
+    <Compile Include="src\InputEdits.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
