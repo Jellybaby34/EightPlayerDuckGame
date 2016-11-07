@@ -59,6 +59,9 @@ namespace DuckGame.IncreasedPlayerLimit
                 
             MethodInfo methodToReplace = typereplace1.GetMethod(methodtoreplace, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             MethodInfo methodToInject = typeinject1.GetMethod(methodtoinject, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            UnsafeCode.CodeInjection(methodToReplace, methodToInject);
+
+            /*
             RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
             RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
 
@@ -101,7 +104,7 @@ namespace DuckGame.IncreasedPlayerLimit
                     *tar = *inj;
 #endif
                 }
-            }
+            }*/
         }
 
     }
@@ -127,7 +130,7 @@ namespace DuckGame.IncreasedPlayerLimit
             PersonaEdits._personas();
 
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
-//            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting");
+            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting");
 
             Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
                                                                      // Won't be needed in full release

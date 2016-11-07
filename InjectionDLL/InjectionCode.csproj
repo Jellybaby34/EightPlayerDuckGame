@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IncreasedPlayerLimit</RootNamespace>
-    <AssemblyName>8PlayerLimit</AssemblyName>
+    <AssemblyName>CodeInjectionDLL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,13 +30,9 @@
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CodeInjectionDLL, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CodeInjectionDLL.dll</HintPath>
-    </Reference>
     <Reference Include="DuckGame">
       <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Duck Game\DuckGame.exe</HintPath>
       <Private>False</Private>
@@ -50,12 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="8PlayerLimit.cs" />
-    <Compile Include="src\TeamSelect2Edits.cs" />
-    <Compile Include="src\DuckNetworkCoreEdits.cs" />
-    <Compile Include="src\PersonaEdits.cs" />
-    <Compile Include="src\InputProfileCoreEdits.cs" />
-    <Compile Include="src\InputEdits.cs" />
+    <Compile Include="UnsafeCode.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
