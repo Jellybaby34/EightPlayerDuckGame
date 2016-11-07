@@ -7,7 +7,6 @@
 using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Linq;
 
 // The title of your mod, as displayed in menus
 [assembly: AssemblyTitle("8 Player Duck Game Alpha")]
@@ -39,6 +38,7 @@ namespace DuckGame.IncreasedPlayerLimit
             if (typereplace == 0)
             {
                 typereplace1 = typeof(Duck);
+                typeinject1 = typeof(Injection);
                 
             }
             else if (typereplace == 1)
@@ -50,6 +50,11 @@ namespace DuckGame.IncreasedPlayerLimit
             {
                 typereplace1 = typeof(Input);
                 typeinject1 = typeof(InputEdits);
+            }
+            else if (typereplace == 3)
+            {
+                typereplace1 = typeof(TeamSelect2);
+                typeinject1 = typeof(TeamSelect2Edits);
             }
                 
             MethodInfo methodToReplace = typereplace1.GetMethod(methodtoreplace, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
@@ -122,9 +127,10 @@ namespace DuckGame.IncreasedPlayerLimit
             PersonaEdits._personas();
 
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
+//            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting");
 
-//            Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
-//                                                                     // Won't be needed in full release
+            Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
+                                                                     // Won't be needed in full release
 
             // Base
             base.OnPreInitialize();

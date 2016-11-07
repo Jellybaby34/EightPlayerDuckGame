@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="8PlayerLimit.cs" />
+    <Compile Include="src\TeamSelect2Edits.cs" />
     <Compile Include="src\DuckNetworkCoreEdits.cs" />
     <Compile Include="src\PersonaEdits.cs" />
     <Compile Include="src\InputProfileCoreEdits.cs" />
