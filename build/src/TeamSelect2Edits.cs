@@ -10,13 +10,16 @@ namespace DuckGame.IncreasedPlayerLimit
     {
         public static void OnNetworkConnecting(Profile p)
         {
-            TeamSelect2 ayy = (TeamSelect2) Level.current;
+            Type typea = typeof(TeamSelect2);
+            FieldInfo info2 = typea.GetField("_profiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            List<ProfileBox2> _profiles = info2.GetValue(null) as List<ProfileBox2>;
+
             if (p.networkIndex > 4)
             {
                 // 0 is player 1's box so we should put player 5 in there as well
-                ayy._profiles[p.networkIndex - 5].PrepareDoor();
+                _profiles[p.networkIndex - 5].PrepareDoor();
             }
-            ayy._profiles[p.networkIndex].PrepareDoor();
+            _profiles[p.networkIndex].PrepareDoor();
         }
 
         public static void OnlineSettings()

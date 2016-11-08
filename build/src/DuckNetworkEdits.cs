@@ -7,6 +7,7 @@ namespace DuckGame.IncreasedPlayerLimit
     public class DuckNetworkEdits
     {
         // Because TeamSelect2.OnNetworkConnecting gets inlined, we have to change all these functions. Thanks Mr. Compiler
+        // All logging is commented out because DevConsole is an internal class. Will find a way around at some point
 
         // Get the private method CreateProfile
         public static MethodInfo createProfile = typeof(DuckNetwork).GetMethod("CreateProfile", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);

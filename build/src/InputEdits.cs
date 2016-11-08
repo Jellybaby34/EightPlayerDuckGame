@@ -5,7 +5,7 @@ namespace DuckGame.IncreasedPlayerLimit
 {
     public class InputEdits
     {
-        // InitDefaultProfiles
+
         public static void InitDefaultProfiles()
         {
 
@@ -33,7 +33,6 @@ namespace DuckGame.IncreasedPlayerLimit
             InputProfile.Add("Blank");
         }
 
-        // Initialize
         public static void Initialize()
         {
             Type inputtype = typeof(Input);

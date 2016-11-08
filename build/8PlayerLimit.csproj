@@ -35,9 +35,8 @@
   <ItemGroup>
     <Reference Include="CodeInjectionDLL, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CodeInjectionDLL.dll</HintPath>
+      <HintPath>.\CodeInjectionDLL.dll</HintPath>
       <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="DuckGame">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Duck Game\DuckGame.exe</HintPath>
@@ -53,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="8PlayerLimit.cs" />
+    <Compile Include="src\CodeFile1.cs" />
     <Compile Include="src\DuckNetworkEdits.cs" />
     <Compile Include="src\TeamSelect2Edits.cs" />
     <Compile Include="src\DuckNetworkCoreEdits.cs" />
