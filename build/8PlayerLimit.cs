@@ -53,57 +53,12 @@ namespace DuckGame.IncreasedPlayerLimit
             }
             else if (typereplace == 3)
             {
-                typereplace1 = typeof(TeamSelect2);
-                typeinject1 = typeof(TeamSelect2Edits);
+                typereplace1 = typeof(DuckNetwork);
+                typeinject1 = typeof(DuckNetworkEdits);
             }
             MethodInfo methodToReplace = typereplace1.GetMethod(methodtoreplace, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             MethodInfo methodToInject = typeinject1.GetMethod(methodtoinject, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             UnsafeCode.CodeInjection(methodToReplace, methodToInject);
-
-            /*
-            RuntimeHelpers.PrepareMethod(methodToReplace.MethodHandle);
-            RuntimeHelpers.PrepareMethod(methodToInject.MethodHandle);
-
-            unsafe
-            {
-                if (IntPtr.Size == 4)
-                {
-                    int* inj = (int*)methodToInject.MethodHandle.Value.ToPointer() + 2;
-                    int* tar = (int*)methodToReplace.MethodHandle.Value.ToPointer() + 2;
-#if DEBUG
-                    Console.WriteLine("\nVersion x84 Debug\n");
-
-                    byte* injInst = (byte*)*inj;
-                    byte* tarInst = (byte*)*tar;
-
-                    int* injSrc = (int*)(injInst + 1);
-                    int* tarSrc = (int*)(tarInst + 1);
-
-                    *tarSrc = (((int)injInst + 5) + *injSrc) - ((int)tarInst + 5);
-#else
-                    *tar = *inj;
-#endif
-                }
-                else
-                {
-
-                    long* inj = (long*)methodToInject.MethodHandle.Value.ToPointer() + 1;
-                    long* tar = (long*)methodToReplace.MethodHandle.Value.ToPointer() + 1;
-#if DEBUG
-                    Console.WriteLine("\nVersion x64 Debug\n");
-                    byte* injInst = (byte*)*inj;
-                    byte* tarInst = (byte*)*tar;
-
-
-                    int* injSrc = (int*)(injInst + 1);
-                    int* tarSrc = (int*)(tarInst + 1);
-
-                    *tarSrc = (((int)injInst + 5) + *injSrc) - ((int)tarInst + 5);
-#else
-                    *tar = *inj;
-#endif
-                }
-            }*/
         }
 
     }
@@ -132,12 +87,15 @@ namespace DuckGame.IncreasedPlayerLimit
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
 
             TeamSelect2Edits.OnlineSettings();
-//            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting"); // Crashes when game calls OnSessionEnd
-                                                                                  // Will implement when it doesn't crash.
+
+            // Because inline removed TeamSelect2.OnNetworkConnecting, I have to inject the methods that called it to change them
+            Injection.install(3, "JoinLocalDuck", "JoinLocalDuck");
+            Injection.install(3, "OnMessageFromNewClient", "OnMessageFromNewClient");
+            Injection.install(3, "OnMessage", "OnMessage");
 
 
             Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
-                                                                     // Won't be needed in full release
+            // Won't be needed in full release
 
             // Base
             base.OnPreInitialize();
