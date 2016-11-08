@@ -131,7 +131,7 @@ namespace DuckGame.IncreasedPlayerLimit
 
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
 
-
+            TeamSelect2Edits.OnlineSettings();
 //            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting"); // Crashes when game calls OnSessionEnd
                                                                                   // Will implement when it doesn't crash.
 

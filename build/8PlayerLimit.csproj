@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="DuckGame">
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Duck Game\DuckGame.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

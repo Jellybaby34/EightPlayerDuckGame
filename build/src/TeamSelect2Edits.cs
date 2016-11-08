@@ -25,5 +25,19 @@ namespace DuckGame.IncreasedPlayerLimit
             }
             ayy._profiles[p.networkIndex].PrepareDoor();
         }
+
+        public static void OnlineSettings()
+        {
+            List<MatchSetting> onlineSettings = new List<MatchSetting>()
+            { new MatchSetting() { id = "maxplayers", name = "MAX PLAYERS", value = (object)8, min = 2, max = 8, step = 1 },
+              new MatchSetting() { id = "teams", name = "TEAMS", value = (object)false },
+              new MatchSetting() { id = "modifiers", name = "MODIFIERS", value = (object)false, filtered = true, filterOnly = true },
+              new MatchSetting() { id = "type", name = "TYPE", value = (object)2, min = 0, max = 2, createOnly = true, valueStrings = new List<string>() { "PRIVATE", "FRIENDS", "PUBLIC" } }
+            };
+
+            Type typea = typeof(TeamSelect2);
+            FieldInfo info2 = typea.GetField("onlineSettings", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            info2.SetValue(null, onlineSettings);
+        }
     }
 }
