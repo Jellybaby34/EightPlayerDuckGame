@@ -5,8 +5,8 @@
 */
 
 using System;
+using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
 
 // The title of your mod, as displayed in menus
 [assembly: AssemblyTitle("8 Player Duck Game Alpha")]
@@ -18,7 +18,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDescription("Edits various bits of duck game to allow up to 8 players to join")]
 
 // The mod's version
-[assembly: AssemblyVersion("0.0.0.2")]
+[assembly: AssemblyVersion("0.0.0.3")]
 
 namespace DuckGame.IncreasedPlayerLimit
 {
@@ -56,7 +56,6 @@ namespace DuckGame.IncreasedPlayerLimit
                 typereplace1 = typeof(TeamSelect2);
                 typeinject1 = typeof(TeamSelect2Edits);
             }
-                
             MethodInfo methodToReplace = typereplace1.GetMethod(methodtoreplace, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             MethodInfo methodToInject = typeinject1.GetMethod(methodtoinject, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             UnsafeCode.CodeInjection(methodToReplace, methodToInject);
@@ -120,6 +119,7 @@ namespace DuckGame.IncreasedPlayerLimit
 		// This function is run before all mods are finished loading.
 		protected override void OnPreInitialize()
 		{
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             Injection.install(2, "InitDefaultProfiles", "InitDefaultProfiles");
 
@@ -130,7 +130,11 @@ namespace DuckGame.IncreasedPlayerLimit
             PersonaEdits._personas();
 
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
-            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting");
+
+
+//            Injection.install(3, "OnNetworkConnecting", "OnNetworkConnecting"); // Crashes when game calls OnSessionEnd
+                                                                                  // Will implement when it doesn't crash.
+
 
             Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
                                                                      // Won't be needed in full release
@@ -144,5 +148,28 @@ namespace DuckGame.IncreasedPlayerLimit
 		{
 			base.OnPostInitialize();
 		}
-	}
+
+
+        // Used to load the embedded DLL rather than have the user put it in the Duck Game folder
+        public static Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            return Load();
+        }
+
+        public static Assembly Load()
+        {
+            byte[] ba = null;
+            //string resource = "DuckGame.IncreasedPlayerLimit.CodeInjectionDLL.dll";
+            string resource = "IncreasedPlayerLimit.CodeInjectionDLL.dll";
+            Assembly curAsm = Assembly.GetExecutingAssembly();
+            using (Stream stm = curAsm.GetManifestResourceStream(resource))
+            {
+                ba = new byte[(int)stm.Length];
+                stm.Read(ba, 0, (int)stm.Length);
+
+                return Assembly.Load(ba);
+            }
+        }
+
+    }
 }
