@@ -42,6 +42,13 @@
       <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Duck Game\DuckGame.exe</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Steam">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\SteamApps\common\Duck Game\Steam.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,8 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="8PlayerLimit.cs" />
-    <Compile Include="src\CodeFile1.cs" />
     <Compile Include="src\DuckNetworkEdits.cs" />
+    <Compile Include="src\ProfileCoreEdits.cs" />
     <Compile Include="src\TeamSelect2Edits.cs" />
     <Compile Include="src\DuckNetworkCoreEdits.cs" />
     <Compile Include="src\PersonaEdits.cs" />

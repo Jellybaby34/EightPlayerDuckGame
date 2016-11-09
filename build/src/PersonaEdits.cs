@@ -19,7 +19,6 @@ namespace DuckGame.IncreasedPlayerLimit
                 new DuckPersona(new Vec3(235f, 0f, 0f))      // Red
             };
 
-
             Type typea = typeof(Persona);
             FieldInfo info2 = typea.GetField("_personas", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             info2.SetValue(null, objTemp);

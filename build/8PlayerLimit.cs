@@ -56,6 +56,16 @@ namespace DuckGame.IncreasedPlayerLimit
                 typereplace1 = typeof(DuckNetwork);
                 typeinject1 = typeof(DuckNetworkEdits);
             }
+            else if (typereplace == 4)
+            {
+                typereplace1 = typeof(TeamSelect2);
+                typeinject1 = typeof(TeamSelect2Edits);
+            }
+            else if (typereplace == 5)
+            {
+                typereplace1 = typeof(ProfilesCore);
+                typeinject1 = typeof(ProfilesCoreEdits);
+            }
             MethodInfo methodToReplace = typereplace1.GetMethod(methodtoreplace, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             MethodInfo methodToInject = typeinject1.GetMethod(methodtoinject, BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             UnsafeCode.CodeInjection(methodToReplace, methodToInject);
@@ -75,18 +85,30 @@ namespace DuckGame.IncreasedPlayerLimit
 		protected override void OnPreInitialize()
 		{
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+            ProfilesCore profilecore = typeof(Profiles).GetField("_core", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(null) as ProfilesCore;
 
             Injection.install(2, "InitDefaultProfiles", "InitDefaultProfiles");
+
+            PersonaEdits._personas();
+
+
+            InputProfileCoreEdits.defaultProfiles();
+            ProfilesCoreEdits.allCustomProfiles();
+            Injection.install(5, "Initialize", "Initialize");
+
+            profilecore.Initialize();
 
             InputEdits.Initialize();
             InputEdits.InitDefaultProfiles();
 
-            InputProfileCoreEdits.defaultProfiles();
-            PersonaEdits._personas();
 
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
 
             TeamSelect2Edits.OnlineSettings();
+
+            // Generate new profile boxes
+            Injection.install(4, "UpdateModifierStatus", "UpdateModifierStatus");
+
 
             // Because inline removed TeamSelect2.OnNetworkConnecting, I have to inject the methods that called it to change them
             Injection.install(3, "JoinLocalDuck", "JoinLocalDuck");
@@ -94,7 +116,7 @@ namespace DuckGame.IncreasedPlayerLimit
             Injection.install(3, "OnMessage", "OnMessage");
 
 
-            Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
+//            Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
             // Won't be needed in full release
 
             // Base
