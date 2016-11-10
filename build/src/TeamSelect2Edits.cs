@@ -14,14 +14,16 @@ namespace DuckGame.IncreasedPlayerLimit
         {
             List<ProfileBox2> _profiles = typeof(TeamSelect2).GetField("_profiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(Level.current as TeamSelect2) as List<ProfileBox2>;
 
+            /*
             if (p.networkIndex > 4)
             {
                 // 0 is player 1's box so we should put player 5 in there as well
                 _profiles[p.networkIndex - 5].PrepareDoor();
                 //_profiles[0].PrepareDoor();
             }
+            */
             //_profiles[p.networkIndex].PrepareDoor();
-            _profiles[0].PrepareDoor();
+            _profiles[p.networkIndex].PrepareDoor();
         }
 
         public static void OnlineSettings()
@@ -51,7 +53,6 @@ namespace DuckGame.IncreasedPlayerLimit
             var type = method.DeclaringType;
             var name = method.Name;
 
-//            throw new InvalidProgramException(name.ToString() + " "+type.ToString());
             if (name == "Initialize" && type == typeof(TeamSelect2)) 
             {
                 List<DuckPersona> _personas = typeof(Persona).GetField("_personas", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(null) as List<DuckPersona>;
@@ -99,8 +100,9 @@ namespace DuckGame.IncreasedPlayerLimit
                 _profiles.Add(profileBox2_8);
                 Level.Add(profileBox2_8);
 
-                // Expand the view
-                Level.current.camera = new Camera(0f, 0f, 320f, (Graphics.height / 2f));
+                // Expand the view and tweak boxes
+                Level.current.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
+                Layer.HUD.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
 
             }
 
@@ -123,6 +125,40 @@ namespace DuckGame.IncreasedPlayerLimit
             if (!Network.isActive || !Network.isServer || Steam.lobby == null)
                 return;
             Steam.lobby.SetLobbyData("modifiers", flag ? "true" : "false");
+        }
+
+        public static void DoInvite()
+        {
+            bool _attemptingToInvite = (bool) typeof(TeamSelect2).GetField("_attemptingToInvite", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(Level.current as TeamSelect2);
+
+            if (!Network.isActive)
+            {
+                bool _didHost = (bool)typeof(TeamSelect2).GetField("_didHost", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(Level.current as TeamSelect2);
+
+                TeamSelect2.FillMatchmakingProfiles();
+                DuckNetwork.Host(8, NetworkLobbyType.FriendsOnly);
+                (Level.current as TeamSelect2).PrepareForOnline();
+                _didHost = true;
+
+            }
+            _attemptingToInvite = true;
+        }
+
+        public static void FillMatchmakingProfiles()
+        {
+            for (int index = 0; index < 8; ++index)
+            {
+                if (Level.current is TeamSelect2)
+                    (Level.current as TeamSelect2).ClearTeam(index);
+            }
+            UIMatchmakingBox.matchmakingProfiles.Clear();
+            foreach (Profile profile in Profiles.active)
+            {
+                profile.team = Teams.all[Persona.Number(profile.persona)];
+                MatchmakingPlayer matchmakingPlayer = new MatchmakingPlayer() { duckIndex = (byte)Persona.Number(profile.persona), inputProfile = profile.inputProfile, team = profile.team };
+                matchmakingPlayer.customData = (byte[])null;
+                UIMatchmakingBox.matchmakingProfiles.Add(matchmakingPlayer);
+            }
         }
     }
 }

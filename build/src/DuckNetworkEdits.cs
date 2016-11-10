@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace DuckGame.IncreasedPlayerLimit
 {
@@ -15,6 +16,92 @@ namespace DuckGame.IncreasedPlayerLimit
         public static DuckNetworkCore _core = (DuckNetworkCore) typeof(DuckNetwork).GetField("_core", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
         // Get the private method OpenTeamSwitchDialogue
         public static MethodInfo openTeamSwitchDialogue = typeof(DuckNetwork).GetMethod("OpenTeamSwitchDialogue", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+
+        public static void Host(int maxPlayers, NetworkLobbyType lobbyType)
+        {
+            if (_core.status != DuckNetStatus.Disconnected)
+                return;
+            //            DevConsole.Log(DCSection.DuckNet, "|LIME|Hosting new server. ", -1);
+            
+            // Rubbish fix for Update calling host with 4 max players. Need better way
+            if (maxPlayers == 4 && lobbyType == NetworkLobbyType.FriendsOnly)
+            {
+                maxPlayers = 8;
+            }
+
+            DuckNetwork.Reset();
+            foreach (Profile universalProfile in Profiles.universalProfileList)
+                universalProfile.team = (Team)null;
+            _core.error = (DuckNetErrorInfo)null;
+            TeamSelect2.DefaultSettings();
+            Network.HostServer(lobbyType, maxPlayers, "duckGameServer", 1337);
+            DuckNetwork.localConnection.AttemptConnection();
+            foreach (Profile profile in DuckNetwork.profiles)
+            {
+                profile.slotType = lobbyType != NetworkLobbyType.Private ? (lobbyType != NetworkLobbyType.FriendsOnly ? SlotType.Open : SlotType.Friend) : SlotType.Invite;
+                if ((int)profile.networkIndex >= maxPlayers)
+                    profile.slotType = SlotType.Closed;
+            }
+            int num = 1;
+            _core.localDuckIndex = -1;
+            foreach (MatchmakingPlayer matchmakingProfile in UIMatchmakingBox.matchmakingProfiles)
+            {
+                string name = Network.activeNetwork.core.GetLocalName();
+                if (num > 1)
+                    name = name + "(" + num.ToString() + ")";
+                if (_core.localDuckIndex == -1)
+                {
+                    _core.localDuckIndex = (int)matchmakingProfile.duckIndex;
+                    _core.hostDuckIndex = (int)matchmakingProfile.duckIndex;
+                }
+                Profile profile = (Profile) createProfile.Invoke(null, new object[] { _core.localConnection, name, (int)matchmakingProfile.duckIndex, matchmakingProfile.inputProfile, false, false, false } );
+                if (num > 1)
+                    profile.slotType = SlotType.Local;
+                profile.networkStatus = DuckNetStatus.Connected;
+                if (matchmakingProfile.team != null)
+                {
+                    if (matchmakingProfile.team.customData != null)
+                    {
+                        profile.team = Teams.all[(int)matchmakingProfile.duckIndex];
+                        Team.MapFacade(profile.steamID, matchmakingProfile.team);
+                    }
+                    else
+                        profile.team = matchmakingProfile.team;
+                }
+                ++num;
+            }
+            _core.localConnection.isHost = true;
+            _core.status = DuckNetStatus.Connecting;
+        }
+
+        public static void ChangeSlotSettings()
+        {
+            bool flag1 = true;
+            bool flag2 = true;
+            int num = 0;
+            foreach (Profile profile in DuckNetwork.profiles)
+            {
+                if (profile.connection != DuckNetwork.localConnection)
+                {
+                    if (profile.slotType != SlotType.Friend)
+                        flag1 = false;
+                    if (profile.slotType != SlotType.Invite)
+                        flag2 = false;
+                    if (profile.slotType != SlotType.Closed)
+                        ++num;
+                }
+                else
+                    ++num;
+            }
+            if (!Network.isServer)
+                return;
+            if (Steam.lobby != null)
+            {
+                Steam.lobby.type = !flag1 ? (!flag2 ? SteamLobbyType.Public : SteamLobbyType.Private) : SteamLobbyType.FriendsOnly;
+                Steam.lobby.maxMembers = 32;
+            }
+            Send.Message(new NMChangeSlotsEdits((byte)DuckNetwork.profiles[0].slotType, (byte)DuckNetwork.profiles[1].slotType, (byte)DuckNetwork.profiles[2].slotType, (byte)DuckNetwork.profiles[3].slotType, (byte)DuckNetwork.profiles[4].slotType, (byte)DuckNetwork.profiles[5].slotType, (byte)DuckNetwork.profiles[6].slotType, (byte)DuckNetwork.profiles[7].slotType));
+        }
 
         public static Profile JoinLocalDuck(InputProfile input)
         {
@@ -78,7 +165,9 @@ namespace DuckGame.IncreasedPlayerLimit
                     TeamSelect2Edits.OnNetworkConnecting(profile);
 
                     DuckNetwork.SendNewProfile(profile, m.connection, false);
-                    Send.Message((NetMessage)new NMChangeSlots((byte)DuckNetwork.profiles[0].slotType, (byte)DuckNetwork.profiles[1].slotType, (byte)DuckNetwork.profiles[2].slotType, (byte)DuckNetwork.profiles[3].slotType), m.connection);
+
+                    // More slots so we need bigger method to handle them
+                    Send.Message(new NMChangeSlotsEdits((byte)DuckNetwork.profiles[0].slotType, (byte)DuckNetwork.profiles[1].slotType, (byte)DuckNetwork.profiles[2].slotType, (byte)DuckNetwork.profiles[3].slotType, (byte)DuckNetwork.profiles[4].slotType, (byte)DuckNetwork.profiles[5].slotType, (byte)DuckNetwork.profiles[6].slotType, (byte)DuckNetwork.profiles[7].slotType), m.connection);
                     TeamSelect2.SendMatchSettings(m.connection, true);
                     return (NetMessage)null;
                 }
@@ -342,7 +431,6 @@ namespace DuckGame.IncreasedPlayerLimit
                     if (profile.connection != DuckNetwork.localConnection || profile.team == null || Teams.all.IndexOf(profile.team) != nmTeamSetDenied.team)
                         return;
                     openTeamSwitchDialogue.Invoke(null, new[] { profile });
-//                   DuckNetwork.OpenTeamSwitchDialogue(profile);
                 }
             }
         }

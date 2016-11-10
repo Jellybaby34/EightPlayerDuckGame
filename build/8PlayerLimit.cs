@@ -84,6 +84,8 @@ namespace DuckGame.IncreasedPlayerLimit
 		// This function is run before all mods are finished loading.
 		protected override void OnPreInitialize()
 		{
+            // The order of these is important for some things, others not. I'll document what each one does eventually.
+
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
             ProfilesCore profilecore = typeof(Profiles).GetField("_core", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(null) as ProfilesCore;
 
@@ -101,7 +103,6 @@ namespace DuckGame.IncreasedPlayerLimit
             InputEdits.Initialize();
             InputEdits.InitDefaultProfiles();
 
-
             Injection.install(1, "RecreateProfiles", "RecreateProfiles");
 
             TeamSelect2Edits.OnlineSettings();
@@ -109,14 +110,25 @@ namespace DuckGame.IncreasedPlayerLimit
             // Generate new profile boxes
             Injection.install(4, "UpdateModifierStatus", "UpdateModifierStatus");
 
+            // DoInvite would call Host(4, LobbyType.FriendsOnly) so we change it to 8 max players
+            Injection.install(4, "DoInvite", "DoInvite");
 
-            // Because inline removed TeamSelect2.OnNetworkConnecting, I have to inject the methods that called it to change them
+            // Would only purge the first 4 boxes by default. Now purges all 8
+            Injection.install(4, "FillMatchmakingProfiles", "FillMatchmakingProfiles");
+
+            // Because inline removes TeamSelect2.OnNetworkConnecting, I have to inject the methods that called it to change them
             Injection.install(3, "JoinLocalDuck", "JoinLocalDuck");
             Injection.install(3, "OnMessageFromNewClient", "OnMessageFromNewClient");
             Injection.install(3, "OnMessage", "OnMessage");
 
+            // New NMChangeSlot net message as the old one only handled 4 parameters and we need 8.
+            Injection.install(3, "ChangeSlotSettings", "ChangeSlotSettings");
 
-//            Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
+            // DuckNetwork.Update calls Host( 4, LobbyType.FriendsOnly ) on inviting someone. Since performance would be garbage reflecting all
+            // the private variables, we detour host instead.
+            Injection.install(3, "Host", "Host");
+
+            //Injection.install(0, "UpdateQuack", "injectionMethod1"); // Disables quack to check everything loaded right
             // Won't be needed in full release
 
             // Base
