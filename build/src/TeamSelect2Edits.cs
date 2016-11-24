@@ -14,15 +14,6 @@ namespace DuckGame.IncreasedPlayerLimit
         {
             List<ProfileBox2> _profiles = typeof(TeamSelect2).GetField("_profiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(Level.current as TeamSelect2) as List<ProfileBox2>;
 
-            /*
-            if (p.networkIndex > 4)
-            {
-                // 0 is player 1's box so we should put player 5 in there as well
-                _profiles[p.networkIndex - 5].PrepareDoor();
-                //_profiles[0].PrepareDoor();
-            }
-            */
-            //_profiles[p.networkIndex].PrepareDoor();
             _profiles[p.networkIndex].PrepareDoor();
         }
 
@@ -104,6 +95,8 @@ namespace DuckGame.IncreasedPlayerLimit
                 Level.current.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
                 Layer.HUD.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
 
+                if (Network.isActive)
+                    (Level.current as TeamSelect2).PrepareForOnline();
             }
 
             // Normal stuff here
@@ -159,6 +152,19 @@ namespace DuckGame.IncreasedPlayerLimit
                 matchmakingPlayer.customData = (byte[])null;
                 UIMatchmakingBox.matchmakingProfiles.Add(matchmakingPlayer);
             }
+        }
+
+        public void ClearTeam(int index)
+        {
+            List<ProfileBox2> _profiles = typeof(TeamSelect2).GetField("_profiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).GetValue(Level.current as TeamSelect2) as List<ProfileBox2>;
+            if (index < 0 || index >= 8 || (_profiles == null || _profiles.Count != 8) || _profiles[index]._hatSelector == null)
+                return;
+            _profiles[index]._hatSelector._desiredTeamSelection = (sbyte)index;
+            if (_profiles[index].duck != null)
+                _profiles[index].duck.profile.team = Teams.all[index];
+            _profiles[index]._hatSelector.ConfirmTeamSelection();
+
+           _profiles[index]._hatSelector._teamSelection = _profiles[index]._hatSelector._desiredTeamSelection = (sbyte)index;
         }
     }
 }

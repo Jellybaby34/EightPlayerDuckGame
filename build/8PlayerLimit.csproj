@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>IncreasedPlayerLimit</RootNamespace>
     <AssemblyName>8PlayerLimit</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>..\</OutputPath>
@@ -31,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CodeInjectionDLL, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
@@ -43,6 +46,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework.Graphics, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <Private>False</Private>
     </Reference>
     <Reference Include="Steam">
@@ -59,9 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="8PlayerLimit.cs" />
+    <Compile Include="src\LevelEdits.cs" />
     <Compile Include="src\DuckNetworkEdits.cs" />
+    <Compile Include="src\HatSelectorEdits.cs" />
     <Compile Include="src\NMChangeSlotsEdits.cs" />
+    <Compile Include="src\OptionsEdits.cs" />
+    <Compile Include="src\ProfileBox2Edits.cs" />
+    <Compile Include="src\RockScoreboardEdits.cs" />
+    <Compile Include="src\NMVoteToSkipEdits.cs" />
+    <Compile Include="src\TeamEdits.cs" />
     <Compile Include="src\ProfileCoreEdits.cs" />
+    <Compile Include="src\TeamsCoreEdits.cs" />
     <Compile Include="src\TeamSelect2Edits.cs" />
     <Compile Include="src\DuckNetworkCoreEdits.cs" />
     <Compile Include="src\PersonaEdits.cs" />

@@ -17,6 +17,36 @@ namespace DuckGame.IncreasedPlayerLimit
         // Get the private method OpenTeamSwitchDialogue
         public static MethodInfo openTeamSwitchDialogue = typeof(DuckNetwork).GetMethod("OpenTeamSwitchDialogue", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
+        public static void UpdateNetmessageTypes()
+        {
+            Type typea = typeof(Network);
+            FieldInfo info2 = typea.GetField("_typeToMessageID", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            dynamic _typeToMessageID = info2.GetValue(Level.current) as Map<ushort, System.Type>;
+            
+            IEnumerable<System.Type> subclasses = Editor.GetSubclasses(typeof(NetMessage));
+            _typeToMessageID.Clear();
+            ushort key = 1;
+            foreach (System.Type type in subclasses)
+            {
+                if (type.GetCustomAttributes(typeof(FixedNetworkID), false).Length != 0)
+                {
+                    FixedNetworkID customAttribute = (FixedNetworkID)type.GetCustomAttributes(typeof(FixedNetworkID), false)[0];
+                    if (customAttribute != null)
+                        _typeToMessageID.Add(type, customAttribute.FixedID);
+                }
+            }
+            foreach (System.Type type in subclasses)
+            {
+                if (!_typeToMessageID.ContainsValue(type))
+                {
+                    while (_typeToMessageID.ContainsKey(key))
+                        ++key;
+                    _typeToMessageID.Add(type, key);
+                    ++key;
+                }
+            }
+        }
+
         public static void Host(int maxPlayers, NetworkLobbyType lobbyType)
         {
             if (_core.status != DuckNetStatus.Disconnected)
@@ -72,6 +102,26 @@ namespace DuckGame.IncreasedPlayerLimit
             }
             _core.localConnection.isHost = true;
             _core.status = DuckNetStatus.Connecting;
+        }
+
+        public static void Join(string id, string ip = "localhost")
+        {
+            if (DuckNetwork.core.status != DuckNetStatus.Disconnected)
+                return;
+            DuckNetwork.Reset();
+            foreach (Profile universalProfile in Profiles.universalProfileList)
+                universalProfile.team = null;
+            for (int index = 0; index < 8; ++index)
+                Teams.all[index].customData = null;
+            foreach (Profile profile in DuckNetwork.profiles)
+                profile.slotType = SlotType.Open;
+            DuckNetwork.core.error = null;
+            DuckNetwork.core.localDuckIndex = -1;
+            TeamSelect2.DefaultSettings();
+            Network.JoinServer(id, 1337, ip);
+            DuckNetwork.localConnection.AttemptConnection();
+            DuckNetwork.core.attemptTimeout = 15f;
+            DuckNetwork.core.status = DuckNetStatus.EstablishingCommunication;
         }
 
         public static void ChangeSlotSettings()
@@ -145,7 +195,7 @@ namespace DuckGame.IncreasedPlayerLimit
                     {
 //                        DevConsole.Log(DCSection.DuckNet, "|DGYELLOW|" + nmRequestJoin.name + " had a version mismatch.", -1);
 //                        return (NetMessage)new NMVersionMismatch(code, DG.version);
-                          return (NetMessage)new NMVersionMismatch(code, "0.0.0.3");
+                          return (NetMessage)new NMVersionMismatch(code, Assembly.GetEntryAssembly().GetName().Version.ToString());
                     }
                     Type methodtype = typeof(DuckNetwork);
                     MethodInfo createProfile = methodtype.GetMethod("CreateProfile", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
@@ -255,7 +305,7 @@ namespace DuckGame.IncreasedPlayerLimit
                     else if (m is NMSetTeam)
                     {
                         NMSetTeam nmSetTeam = m as NMSetTeam;
-                        if (nmSetTeam.duck < 0 || nmSetTeam.duck >= 4)
+                        if (nmSetTeam.duck < 0 || nmSetTeam.duck >= 8)
                             return;
                         Profile profile = DuckNetwork.profiles[nmSetTeam.duck];
                         if (profile.connection == null || profile.team == null)
@@ -413,7 +463,7 @@ namespace DuckGame.IncreasedPlayerLimit
                 else if (m is NMSetTeam)
                 {
                     NMSetTeam nmSetTeam = m as NMSetTeam;
-                    if (nmSetTeam.duck < 0 || nmSetTeam.duck >= 4)
+                    if (nmSetTeam.duck < 0 || nmSetTeam.duck >= 8)
                         return;
                     Profile profile = DuckNetwork.profiles[nmSetTeam.duck];
                     if (profile.connection == null || profile.team == null)
@@ -425,7 +475,7 @@ namespace DuckGame.IncreasedPlayerLimit
                     if (!(m is NMTeamSetDenied))
                         return;
                     NMTeamSetDenied nmTeamSetDenied = m as NMTeamSetDenied;
-                    if (nmTeamSetDenied.duck < 0 || nmTeamSetDenied.duck >= 4)
+                    if (nmTeamSetDenied.duck < 0 || nmTeamSetDenied.duck >= 8)
                         return;
                     Profile profile = DuckNetwork.profiles[nmTeamSetDenied.duck];
                     if (profile.connection != DuckNetwork.localConnection || profile.team == null || Teams.all.IndexOf(profile.team) != nmTeamSetDenied.team)

@@ -17,7 +17,7 @@ namespace DuckGame.IncreasedPlayerLimit
         public static void defaultProfiles()
         {
             PropertyInfo _profilesProperty = typeof(ProfilesCore).GetProperty("defaultProfiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
-            MethodInfo methodToReplace = _profilesProperty.GetGetMethod(true);
+            MethodInfo methodToReplace = _profilesProperty.GetGetMethod();
             MethodInfo methodToInject = typeof(ProfilesCoreEdits).GetMethod("defaultProfilesReplace", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
             UnsafeCode.CodeInjection(methodToReplace, methodToInject);
         }
@@ -46,7 +46,21 @@ namespace DuckGame.IncreasedPlayerLimit
             return profileList;
         }
 
-        public static void Initialize()
+
+        public bool IsDefault(Profile p)
+        {
+            FieldInfo _profilesField = typeof(ProfilesCore).GetField("_profiles", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
+            List<Profile> _profiles = _profilesField.GetValue(profilecore) as List<Profile>;
+
+            for (int index = 0; index < 8; ++index)
+            {
+                if (_profiles[index] == p)
+                    return true;
+            }
+            return false;
+        }
+
+        public void Initialize()
         {
             Type typea = typeof(Persona);
             FieldInfo info2 = typea.GetField("_personas", BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
@@ -94,10 +108,10 @@ namespace DuckGame.IncreasedPlayerLimit
                             else if (element1.Name.LocalName == "Name")
                                 p.name = element1.Value;
                             else if (element1.Name.LocalName == "Mood")
-                                p.funslider = Convert.ToSingle(element1.Value, CultureInfo.InvariantCulture);
+                                p.funslider = Convert.ToSingle(element1.Value);
                             else if (element1.Name.LocalName == "SteamID")
                             {
-                                p.funslider = Convert.ToUInt64(element1.Value, CultureInfo.InvariantCulture);
+                                p.steamID = Convert.ToUInt64(element1.Value);
                                 if ((long)p.steamID != 0L)
                                     profileList1.Add(p);
                             }
