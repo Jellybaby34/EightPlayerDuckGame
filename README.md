@@ -1,3 +1,5 @@
+# BROKEN DO NOT USE, I MIGHT FIX IT, PROBABLY NOT
+
 # 8 Player Duck Game
 # Post bugs to the issue tracker. If I don't know about them I can't fix them
 
