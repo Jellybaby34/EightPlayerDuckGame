@@ -92,8 +92,8 @@ namespace DuckGame.IncreasedPlayerLimit
                 Level.Add(profileBox2_8);
 
                 // Expand the view and tweak boxes
-                Level.current.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
-                Layer.HUD.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
+                Level.current.camera = new Camera(0f, 0f, -1f, (Graphics.height / 3f));
+                Layer.HUD.camera = new Camera(0f, 0f, -1f, (Graphics.height / 3f));
 
                 if (Network.isActive)
                     (Level.current as TeamSelect2).PrepareForOnline();
