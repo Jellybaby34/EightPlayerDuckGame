@@ -1,10 +1,11 @@
-# BROKEN DO NOT USE, I MIGHT FIX IT, PROBABLY NOT
-
-# 8 Player Duck Game
-# Post bugs to the issue tracker. If I don't know about them I can't fix them
+# Eight Player Duck Game
+# Please post bugs on the issue tracker.
 
 # Overview 
-This is a mod for the game "Duck Game" which allows more than 4 players to join a single game. The end goal is that this mod will be able to be hosted on the workshop just like any other mod and allow large games.
+This is a mod for Duck Game which allows up to eight player to join a single game.
+
+# Reporting Issues
+When reporting bugs or issues. Please include any error messages and ways to replicate them. It makes my life much easier when fixing bugs.
 
 # Installing
 Download it using the steam workshop at the following link:
@@ -13,4 +14,3 @@ http://steamcommunity.com/sharedfiles/filedetails/?id=796033146
 Any questions can be directed to me at this steam group:
 http://steamcommunity.com/groups/8PlayerDuckGame
 
--Jellybaby34

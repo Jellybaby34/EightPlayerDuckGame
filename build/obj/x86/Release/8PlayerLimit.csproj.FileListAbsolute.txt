@@ -1,5 +1,0 @@
-C:\Users\User\Documents\DuckGame\Mods\8PlayerLimit\build\obj\x86\Release\8PlayerLimit.csprojResolveAssemblyReference.cache
-C:\Users\User\Documents\DuckGame\Mods\8PlayerLimit\build\obj\x86\Release\8PlayerLimit.dll
-C:\Users\User\Documents\DuckGame\Mods\8PlayerLimit\build\obj\x86\Release\8PlayerLimit.pdb
-C:\Users\User\Documents\DuckGame\Mods\8PlayerLimit\8PlayerLimit.dll
-C:\Users\User\Documents\DuckGame\Mods\8PlayerLimit\8PlayerLimit.pdb
