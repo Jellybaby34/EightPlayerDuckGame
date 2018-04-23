@@ -18,11 +18,11 @@ namespace DuckGame.EightPlayerDuckGame
                 if (!(ducksField.GetValue(__instance) as List<BeamDuck>).Any((BeamDuck t) => t.duck == d))
                 {
                     float num;
-                    if ( 0f <= d.y && d.y <= 50f)
+                    if (d.y <= 59f)
                     {
                         num = 25f;
                     }
-                    else if (51f <= d.y && d.y <= 95f)
+                    else if (60f <= d.y && d.y <= 119f)
                     {
                         num = 85f;
                     }

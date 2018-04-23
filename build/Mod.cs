@@ -15,7 +15,7 @@ using Harmony;
 [assembly: AssemblyDescription("Allows up to eight players instead of the default four.")]
 
 // The mod's version
-[assembly: AssemblyVersion("1.0.0.1")]
+[assembly: AssemblyVersion("1.0.0.2")]
 
 namespace DuckGame.EightPlayerDuckGame
 {

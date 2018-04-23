@@ -18,6 +18,9 @@ namespace DuckGame.EightPlayerDuckGame
 
                 codes[471].opcode = OpCodes.Ldc_I4_8;
 
+                codes[489].operand = 13f;
+                codes.RemoveRange(491, 17);
+
 
                 return codes.AsEnumerable();
             }
