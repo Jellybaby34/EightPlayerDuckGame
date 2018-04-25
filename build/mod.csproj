@@ -77,6 +77,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mod.cs" />
+    <Compile Include="src\Class Edits\UIConnectionInfoEdits.cs" />
+    <Compile Include="src\Class Edits\ConnectionStatusUIEdits.cs" />
     <Compile Include="src\Class Edits\RockScoreboardEdits.cs" />
     <Compile Include="src\Class Edits\ConsoleScreenEdits.cs" />
     <Compile Include="src\Class Edits\DuckNetworkCoreEdits.cs" />

@@ -21,7 +21,6 @@ namespace DuckGame.EightPlayerDuckGame
                 codes[489].operand = 13f;
                 codes.RemoveRange(491, 17);
 
-
                 return codes.AsEnumerable();
             }
         }
