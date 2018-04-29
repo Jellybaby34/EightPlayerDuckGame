@@ -346,15 +346,13 @@ namespace DuckGame.EightPlayerDuckGame
 
                 codes[19].operand = 82f;
                 codes[20].operand = 59f;
+                codes[32].operand = 300f;
+                codes[41].operand = 300f;
                 codes[56].operand = 82f;
+                codes[65].operand = 300f;
                 codes[82].operand = 59f;
                 codes[87].operand = 82f;
                 codes[109].operand = 82f;
-
-                codes[32].operand = 300f;
-                codes[41].operand = 300f;
-                codes[65].operand = 300f;
-//                codes[45].operand = AccessTools.Field(typeof(Color), "White");
 
                 return codes.AsEnumerable();
             }

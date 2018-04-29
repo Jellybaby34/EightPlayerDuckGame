@@ -421,12 +421,7 @@ namespace DuckGame.EightPlayerDuckGame
                 Layer.HUD = l;
                 Editor.gamepadMode = true;
                 Layer.HUD = hud;
-
-                /*
-                Level.current.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
-                Layer.HUD.camera = new Camera(0f, 0f, -1f, (Graphics.height / 2f));
-                */
-
+                
                 // Start of setting private fields
                 teamselect2type.GetField("_littleFont", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, littleFont);
                 teamselect2type.GetField("_countdownScreen", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, countdownScreen);
@@ -453,7 +448,7 @@ namespace DuckGame.EightPlayerDuckGame
                 teamselect2type.GetField("_createGame", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, createGame);
                 teamselect2type.GetField("_hostGame", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(__instance, hostGame);
                 // End of setting private fields
-
+                
                 if (DuckNetwork.ShowUserXPGain() || !Unlockables.HasPendingUnlocks())
                     return false;
                 MonoMain.pauseMenu = (UIComponent)new UIUnlockBox(Unlockables.GetPendingUnlocks().ToList<Unlockable>(), Layer.HUD.camera.width / 2f, Layer.HUD.camera.height / 2f, 190f, -1f);                

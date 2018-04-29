@@ -68,7 +68,7 @@ namespace DuckGame.EightPlayerDuckGame
                     new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Profile), "networkIndex").GetGetMethod()),
                     new CodeInstruction(OpCodes.Ldc_I4_5, null),
                     new CodeInstruction(OpCodes.Bne_Un, blueDuck),
-                    new CodeInstruction(OpCodes.Ldstr, "|DGBLUE|"),
+                    new CodeInstruction(OpCodes.Ldstr, "|DGGREEN|"),
                     new CodeInstruction(OpCodes.Stloc_S, 15),
                     new CodeInstruction(OpCodes.Br, exitLabel),
 
@@ -77,7 +77,7 @@ namespace DuckGame.EightPlayerDuckGame
                     new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Profile), "networkIndex").GetGetMethod()),
                     new CodeInstruction(OpCodes.Ldc_I4_6, null),
                     new CodeInstruction(OpCodes.Bne_Un, redDuck),
-                    new CodeInstruction(OpCodes.Ldstr, "|DGRED|"),
+                    new CodeInstruction(OpCodes.Ldstr, "|DGBLUE|"),
                     new CodeInstruction(OpCodes.Stloc_S, 15),
                     new CodeInstruction(OpCodes.Br, exitLabel),
 
@@ -86,7 +86,7 @@ namespace DuckGame.EightPlayerDuckGame
                     new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Profile), "networkIndex").GetGetMethod()),
                     new CodeInstruction(OpCodes.Ldc_I4_7, null),
                     new CodeInstruction(OpCodes.Bne_Un, exitLabel),
-                    new CodeInstruction(OpCodes.Ldstr, "|DGBLUE|"),
+                    new CodeInstruction(OpCodes.Ldstr, "|DGRED|"),
                     new CodeInstruction(OpCodes.Stloc_S, 15),
                     new CodeInstruction(OpCodes.Nop, null) { labels = new List<Label>() { exitLabel } },
                 };
