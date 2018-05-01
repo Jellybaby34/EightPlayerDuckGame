@@ -41,10 +41,11 @@ namespace DuckGame.EightPlayerDuckGame
             [HarmonyPrefix]
             public static bool Prefix(ProfilesCore __instance, ref bool __result, ref Profile p)
             {
-                for (int index = 0; index < 8; ++index)
+                for (int index = 0; index < 8; index++)
                 {
                     if (__instance._profiles[index] == p)
                         __result = true;
+                    return false;
                 }
                 __result = false;
 
