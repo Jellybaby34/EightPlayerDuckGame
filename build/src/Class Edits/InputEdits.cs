@@ -43,17 +43,26 @@ namespace DuckGame.EightPlayerDuckGame
 
         // During Input.Initialize, controllers are generated. I think they are assigned to the MPPlayer profiles but i'm not sure.
         // Either way, the game crashes without them so I generate the extra ones for the new MPPlayer profiles.
-        // I probably need to generate more for LAN controller support but thats coming later.
+        
         public static void AddExtraDevices() // Extends what Initialize() does
         {
             Type inputType = typeof(Input);
-
-            FieldInfo _devicesField = inputType.GetField("_devices", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
+            FieldInfo _devicesField = inputType.GetField("_devices", flags);
             dynamic _devicesVal = _devicesField.GetValue(null);
 
-            FieldInfo _gamePadsField = inputType.GetField("_gamePads", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
+            FieldInfo _gamePadsField = inputType.GetField("_gamePads", flags);
             dynamic _gamePadsVal = _gamePadsField.GetValue(null);
-
+            
+            var _dinputEnabled = (bool)inputType.GetField("_dinputEnabled", flags).GetValue(null);
+           
+            if(_dinputEnabled){
+                _devicesVal.Add(new DInputPad(4));
+                _devicesVal.Add(new DInputPad(5));
+                _devicesVal.Add(new DInputPad(6));
+                _devicesVal.Add(new DInputPad(7));
+            }
+            
             // Player 5
             GenericController genericController5 = new GenericController(4);
             _devicesVal.Add((InputDevice)genericController5);
