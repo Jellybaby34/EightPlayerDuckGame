@@ -44,8 +44,10 @@ namespace DuckGame.EightPlayerDuckGame
                 for (int index = 0; index < 8; index++)
                 {
                     if (__instance._profiles[index] == p)
+                    {
                         __result = true;
-                    return false;
+                        return false;
+                    }
                 }
                 __result = false;
 
