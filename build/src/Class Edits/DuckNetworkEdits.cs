@@ -70,6 +70,23 @@ namespace DuckGame.EightPlayerDuckGame
             }
         }
 
+        [HarmonyPatch(typeof(DuckNetwork), "OnMessage")]
+        public static class DuckNetwork_OnMessage_Transpiler
+        {
+            [HarmonyTranspiler]
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+            {
+                var codes = new List<CodeInstruction>(instructions);
+
+                    if (codes[0x2E8].opcode == OpCodes.Ldc_I4_4)
+                    {
+                        codes[0x2E8].opcode = OpCodes.Ldc_I4_8;
+                    };
+
+                return codes.AsEnumerable();
+            }
+        }
+
         // The netmessages are enumerated on startup and if you send one which isn't enumerated, duck game crashes or at least I remember it doing that
         // We simply run this method to re-enumerate the netmessages after our mod has loaded.
         public static void AddNewNetmessageTypes()

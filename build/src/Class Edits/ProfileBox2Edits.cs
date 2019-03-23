@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DuckGame.EightPlayerDuckGame
 {
@@ -88,6 +86,8 @@ namespace DuckGame.EightPlayerDuckGame
             [HarmonyPriority(Harmony.Priority.First)]
             private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
+
+
                 List<CodeInstruction> codes = new List<CodeInstruction>(instructions);
 
                 // ldstr "selectDoorLeftPC"

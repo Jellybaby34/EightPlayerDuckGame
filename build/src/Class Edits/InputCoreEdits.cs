@@ -8,7 +8,7 @@ namespace DuckGame.EightPlayerDuckGame
         // This property normally returns the first 4 profiles.
         // We extend it to return the 8 profiles we now have.
         [HarmonyPatch(typeof(InputProfileCore))]
-        [HarmonyPatch("defaultProfiles", PropertyMethod.Getter)]
+        [HarmonyPatch("defaultProfiles", MethodType.Getter)]
         public static class InputProfileCore_defaultProfiles_Prefix
         {
             [HarmonyPrefix]

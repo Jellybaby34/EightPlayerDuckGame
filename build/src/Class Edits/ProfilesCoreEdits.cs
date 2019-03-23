@@ -14,7 +14,7 @@ namespace DuckGame.EightPlayerDuckGame
         // This property starts with index = 4, and adds any profiles above that as custom profiles
         // Our extra 4 would be considered "custom" but we don't want that so we change the start to 8.
         [HarmonyPatch(typeof(ProfilesCore))]
-        [HarmonyPatch("allCustomProfiles", PropertyMethod.Getter)]
+        [HarmonyPatch("allCustomProfiles", MethodType.Getter)]
         public static class ProfilesCore_allCustomProfiles_Transpiler
         {
             [HarmonyTranspiler]

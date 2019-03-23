@@ -11,7 +11,7 @@ namespace DuckGame.EightPlayerDuckGame
     {
         public static void UpdateOnlineSettings()
         {
-            List<MatchSetting> onlineSettings = new List<MatchSetting>() { new MatchSetting() { id = "maxplayers", name = "MAX PLAYERS", value = (object)8, min = 2, max = 8, step = 1 }, new MatchSetting() { id = "teams", name = "TEAMS", value = (object)false }, new MatchSetting() { id = "modifiers", name = "MODIFIERS", value = (object)false, filtered = true, filterOnly = true }, new MatchSetting() { id = "type", name = "TYPE", value = (object)2, min = 0, max = 2, createOnly = true, valueStrings = new List<string>() { "PRIVATE", "FRIENDS", "PUBLIC" } } };
+            List<MatchSetting> onlineSettings = new List<MatchSetting>() { new MatchSetting() { id = "maxplayers", name = "MAX PLAYERS", value = 8, min = 2, max = 8, step = 1 }, new MatchSetting() { id = "teams", name = "TEAMS", value = (object)false }, new MatchSetting() { id = "modifiers", name = "MODIFIERS", value = (object)false, filtered = true, filterOnly = true }, new MatchSetting() { id = "type", name = "TYPE", value = (object)2, min = 0, max = 2, createOnly = true, valueStrings = new List<string>() { "PRIVATE", "FRIENDS", "PUBLIC" } } };
             TeamSelect2.onlineSettings = onlineSettings;
         }
 
@@ -247,32 +247,6 @@ namespace DuckGame.EightPlayerDuckGame
                 spicySax.infinite = true;
                 Level.Add(spicySax);
 
-                /* ORIGINAL
-                ProfileBox2 profileBox2_1 = new ProfileBox2(xpos, 1f, InputProfile.Get("MPPlayer1"), defaultProfile1, __instance, 0);
-                profiles.Add(profileBox2_1);
-                Level.Add((Thing)profileBox2_1);
-                ProfileBox2 profileBox2_2 = new ProfileBox2(xpos + 178f, 1f, InputProfile.Get("MPPlayer2"), defaultProfile2, __instance, 1);
-                profiles.Add(profileBox2_2);
-                Level.Add((Thing)profileBox2_2);
-                ProfileBox2 profileBox2_3 = new ProfileBox2(xpos, 90f, InputProfile.Get("MPPlayer3"), defaultProfile3, __instance, 2);
-                profiles.Add(profileBox2_3);
-                Level.Add((Thing)profileBox2_3);
-                ProfileBox2 profileBox2_4 = new ProfileBox2(xpos + 178f, 90f, InputProfile.Get("MPPlayer4"), defaultProfile4, __instance, 3);
-                profiles.Add(profileBox2_4);
-                Level.Add((Thing)profileBox2_4);
-                ProfileBox2 profileBox2_5 = new ProfileBox2(xpos, 180f, InputProfile.Get("MPPlayer5"), defaultProfile5, __instance, 4);
-                profiles.Add(profileBox2_5);
-                Level.Add(profileBox2_5);
-                ProfileBox2 profileBox2_6 = new ProfileBox2(xpos + 178f, 180f, InputProfile.Get("MPPlayer6"), defaultProfile6, __instance, 5);
-                profiles.Add(profileBox2_6);
-                Level.Add(profileBox2_6);
-                ProfileBox2 profileBox2_7 = new ProfileBox2(xpos, 270f, InputProfile.Get("MPPlayer7"), defaultProfile7, __instance, 6);
-                profiles.Add(profileBox2_7);
-                Level.Add(profileBox2_7);
-                ProfileBox2 profileBox2_8 = new ProfileBox2(xpos + 178f, 270f, InputProfile.Get("MPPlayer8"), defaultProfile8, __instance, 7);
-                profiles.Add(profileBox2_8);
-                Level.Add(profileBox2_8);
-                */
                 if (Network.isActive)
                     __instance.PrepareForOnline();
                 else

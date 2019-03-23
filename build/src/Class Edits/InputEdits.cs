@@ -43,7 +43,6 @@ namespace DuckGame.EightPlayerDuckGame
 
         // During Input.Initialize, controllers are generated. I think they are assigned to the MPPlayer profiles but i'm not sure.
         // Either way, the game crashes without them so I generate the extra ones for the new MPPlayer profiles.
-        // I probably need to generate more for LAN controller support but thats coming later.
         public static void AddExtraDevices() // Extends what Initialize() does
         {
             Type inputType = typeof(Input);
